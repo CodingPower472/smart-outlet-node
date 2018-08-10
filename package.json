@@ -1,0 +1,19 @@
+{
+  "name": "smart-outlet-final",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "sudo node main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "hap-nodejs": "^0.4.47",
+    "pug": "^2.0.3",
+    "random-mac": "0.0.4"
+  }
+}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        title Power Outlet
+    body
+        table
+            thead
+                th Name
+                th Turn On/Off
+            tbody
+                each outlet, id in outlets
+                    tr
+                        td= outlet.name
+                        td
+                            form(action=`/state/${id}` method="POST")
+                                - var state = outlet.state == true || outlet.state == "true" ? "false" : "true"
+                                - var onoff = outlet.state == true || outlet.state == "true" ? "Turn Off" : "Turn On"
+                                input(type="hidden" name="state" value=state)
+                                input(type="submit" value=onoff)
