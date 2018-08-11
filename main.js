@@ -19,7 +19,7 @@ var outlets = {};
 
 for (id in outletsInfo) {
     const outletInfo = outletsInfo[id];
-    gpioMan.addDevice(id, outletInfo.pin);
+    gpioMan.addDevice(id, outletInfo.pin, outletInfo.reverse);
     const outlet = {
         name: outletInfo.name,
         state: gpioMan.getDeviceState(id)

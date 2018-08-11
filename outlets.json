@@ -1,6 +1,12 @@
 {
     "fan": {
         "name": "Fan",
-        "pin": 8
+        "pin": 8,
+        "reverse": true
+    },
+    "light": {
+        "name": "Light",
+        "pin": 10,
+        "reverse": false
     }
 }

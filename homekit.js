@@ -18,15 +18,48 @@ class HomeKitManager {
 
     getUsernamePincode(id) {
         const filename = `${id}.accessory.state`;
-        const username, pincode;
+        var username = "broken", pincode = "broken";
+        if (!fs.existsSync(path.join(__dirname, 'accessories'))) {
+            console.log('/accessories doesn\'t exist, creating it');
+            fs.mkdirSync(path.join(__dirname, 'accessories'));
+        }
         try {
             const str = fs.readFileSync(path.join(__dirname, 'accessories', filename), 'utf-8');
             const json = JSON.parse(str);
             username = json.username;
             pincode = json.pincode;
+            console.log(`Accessory file already exists, username: ${username} and pincode ${pincode}`);
         } catch (err) {
-            
+            username = randomMac();
+            const first3 = Math.floor(Math.random() * 1000);
+            const middle2 = Math.floor(Math.random() * 100);
+            const final3 = Math.floor(Math.random() * 1000);
+            if (first3 < 100) {
+                first3 = '0' + first3;
+            }
+            if (first3 < 10) {
+                first3 = '0' + first3;
+            }
+            if (middle2 < 10) {
+                middle2 = '0' + middle2;
+            }
+            if (final3 < 100) {
+                final3 = '0' + final3;
+            }
+            if (final3 < 10) {
+                final3 = '0' + final3;
+            }
+            pincode = `${first3}-${middle2}-${final3}`;
+            console.log(`Accessory file doesn't exist, generated username ${username} and pincode ${pincode}`);
+            fs.writeFileSync(path.join(__dirname, 'accessories', filename), JSON.stringify({
+                username: username,
+                pincode: pincode
+            }));
         }
+        return {
+            username: username,
+            pincode: pincode
+        };
     }
 
     updateValue(id, requestedValue) {
@@ -65,10 +98,14 @@ class HomeKitManager {
                 callback(null, true);
             });
 
+        const usernamePincode = this.getUsernamePincode(id);
+
+        console.log(usernamePincode);
+
         accessory.publish({
-            port: 51826,
-            username: "D5:9D:3F:81:C7:9C",
-            pincode: "020-82-911"
+            port: 51826 + this.outlets.length,
+            username: usernamePincode.username,
+            pincode: usernamePincode.pincode
         });
 
         this.outlets[id] = accessory;
